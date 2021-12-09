@@ -82,7 +82,7 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--min_price", 
-        type=float
+        type=float,
         help="lower limit of price column",
         required=True
     )
