@@ -7,13 +7,11 @@ import logging
 import wandb
 import pandas as pd
 
-
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 logger = logging.getLogger()
 
 
 def go(args):
-
     run = wandb.init(job_type="basic_cleaning")
     run.config.update(args)
 
@@ -37,9 +35,9 @@ def go(args):
     # Creating artifact for it
     logger.info('Creating artifact')
     artifact = wandb.Artifact(args.output_artifact,
-                             type=args.output_type, 
-                             description=args.output_description)
-    
+                              type=args.output_type,
+                              description=args.output_description)
+
     logger.info('Loading cleaned data into artifact')
     artifact.add_file('clean_sample.csv')
 
@@ -51,52 +49,49 @@ def go(args):
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser(description="A very basic data cleaning")
 
-
     parser.add_argument(
-        "--input_artifact", 
+        "--input_artifact",
         type=str,
         help="The input you want preprocessed",
         required=True
     )
 
     parser.add_argument(
-        "--output_artifact", 
+        "--output_artifact",
         type=str,
         help="The output of the process",
         required=True,
     )
 
     parser.add_argument(
-        "--output_type", 
+        "--output_type",
         type=str,
         help="The type of the output",
         required=True
     )
 
     parser.add_argument(
-        "--output_description", 
+        "--output_description",
         type=str,
         help="The description of the output artifact",
         required=True
     )
 
     parser.add_argument(
-        "--min_price", 
+        "--min_price",
         type=float,
         help="lower limit of price column",
         required=True
     )
 
     parser.add_argument(
-        "--max_price", 
+        "--max_price",
         type=float,
         help="upper limit of price column",
         required=True
     )
-
 
     args = parser.parse_args()
 
