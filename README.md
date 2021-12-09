@@ -569,4 +569,4 @@ you have trained your new model on the new data.
 [License](LICENSE.txt)
 
 ## Link to project
-The link to the completed project is [here](https://github.com/KimaniKibuthu/nd0821-c2-build-model-workflow-starter)
+The W&B link to the completed project is [here](https://wandb.ai/kimanikibuthu/nyc_airbnb?workspace=user-kimanikibuthu)
