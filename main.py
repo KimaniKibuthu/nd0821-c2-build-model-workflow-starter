@@ -57,7 +57,7 @@ def go(config: DictConfig):
                     "output_artifact":"clean_sample.csv",
                     "output_type": "clean_sample",
                     "output_description": "Data with outliers removed",
-                    "min_price":config["etl"]["min_price"]
+                    "min_price":config["etl"]["min_price"],
                     "max_price":config["etl"]["max_price"]
                 }
             )
