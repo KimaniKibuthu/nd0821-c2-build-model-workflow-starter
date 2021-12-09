@@ -24,8 +24,11 @@ def go(args):
 
     # Clean the data
     logger.info('Cleaning the data by removing outliers')
-    idx = data['price'].between(args.min_price, args.max_price)
-    new_data = data[idx].copy()
+    temp_idx = data['price'].between(args.min_price, args.max_price)
+    new_data = data[temp_idx].copy()
+
+    temp_idx = new_data['longitude'].between(-74.25, -73.50) & new_data['latitude'].between(40.5, 41.2)
+    new_data = new_data[temp_idx].copy()
 
     # Save new data
     logger.info('Saving cleaned data')
