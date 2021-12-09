@@ -6,28 +6,28 @@ entry_points:
     parameters:
 
       input_artifact:
-        description: ## ADD DESCRIPTION
-        type: string
+        description: The raw data to be worked on
+        type: str
 
       output_artifact:
-        description: ## ADD DESCRIPTION
-        type: string
+        description: The cleaned data
+        type: str
 
       output_type:
-        description: ## ADD DESCRIPTION
-        type: string
+        description: clean_data
+        type: str
 
       output_description:
-        description: ## ADD DESCRIPTION
-        type: string
+        description: Cleaned data
+        type: str
 
       min_price:
-        description: ## ADD DESCRIPTION
-        type: string
+        description: Lower limit to clear outliers
+        type: float
 
       max_price:
-        description: ## ADD DESCRIPTION
-        type: string
+        description: Upper limit to clear outliers
+        type: float
 
 
     command: >-
