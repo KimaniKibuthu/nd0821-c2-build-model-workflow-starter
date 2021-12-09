@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 """
-Downloads the raw data from W&B then cleans it using very basic EDA steps. After, the cleanea is saved to W&B
+Downloads the raw data from W&B then cleans it using very basic EDA steps. After, the cleaned is saved to W&B
 """
 import argparse
 import logging
 import wandb
+import pandas as pd
 
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
@@ -16,13 +17,34 @@ def go(args):
     run = wandb.init(job_type="basic_cleaning")
     run.config.update(args)
 
-    # Download input artifact. This will also log that this script is using this
-    # particular version of the artifact
-    # artifact_local_path = run.use_artifact(args.input_artifact).file()
+    # Get the data
+    logger.info('Getting the data')
+    local_path = run.use_artifact(args.input_artifact).file()
+    data = pd.read_csv(local_path)
 
-    ######################
-    # YOUR CODE HERE     #
-    ######################
+    # Clean the data
+    logger.info('Cleaning the data by removing outliers')
+    idx = data['price'].between(args.min_price, args.max_price)
+    new_data = data[idx].copy()
+
+    # Save new data
+    logger.info('Saving cleaned data')
+    new_data.to_csv('clean_sample.csv', index=False)
+
+    # Creating artifact for it
+    logger.info('Creating artifact')
+    artifact = wandb.Artifact(args.output_artifact,
+                             type=args.output_type, 
+                             description=args.output_description)
+    
+    logger.info('Loading cleaned data into artifact')
+    artifact.add_file('clean_sample.csv')
+
+    logger.info('Logging artifact into W&B')
+    run.log_artifact(artifact)
+
+    logger.info('Finishing the run')
+    run.finish()
 
 
 if __name__ == "__main__":
@@ -32,43 +54,43 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--input_artifact", 
-        type=## INSERT TYPE HERE: str, float or int,
-        help=## INSERT DESCRIPTION HERE,
+        type=str,
+        help="The input you want preprocessed",
         required=True
     )
 
     parser.add_argument(
         "--output_artifact", 
-        type=## INSERT TYPE HERE: str, float or int,
-        help=## INSERT DESCRIPTION HERE,
-        required=True
+        type=str,
+        help="The output of the process",
+        required=True,
     )
 
     parser.add_argument(
         "--output_type", 
-        type=## INSERT TYPE HERE: str, float or int,
-        help=## INSERT DESCRIPTION HERE,
+        type=str,
+        help="The type of the output",
         required=True
     )
 
     parser.add_argument(
         "--output_description", 
-        type=## INSERT TYPE HERE: str, float or int,
-        help=## INSERT DESCRIPTION HERE,
+        type=str,
+        help="The description of the output artifact",
         required=True
     )
 
     parser.add_argument(
         "--min_price", 
-        type=## INSERT TYPE HERE: str, float or int,
-        help=## INSERT DESCRIPTION HERE,
+        type=float
+        help="lower limit of price column",
         required=True
     )
 
     parser.add_argument(
         "--max_price", 
-        type=## INSERT TYPE HERE: str, float or int,
-        help=## INSERT DESCRIPTION HERE,
+        type=float,
+        help="upper limit of price column",
         required=True
     )
 
